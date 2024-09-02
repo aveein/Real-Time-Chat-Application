@@ -358,9 +358,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex flex-row mb-3 navigation-mobile scrollable-chat-panel chat-panel-scroll">
-                  <div class="w-100 p-3">
-                    <div class="svg36 loader-animate3 horizontal-margin-auto mb-2"></div>
+                <div class="d-flex flex-row mb-3 navigation-mobile scrollable-chat-panel chat-panel-scroll" id="chat-panel-scroll">
+                  <div class="w-100 p-3" id="my_message">
+                    <!-- <div class="svg36 loader-animate3 horizontal-margin-auto mb-2"></div> -->
                     <div class="text-center letter-space drop-shadow text-uppercase fs-12 w-100 mb-3">Today</div>
                     <div class="left-chat-message fs-13 mb-2">
                       <p class="mb-0 mr-3 pr-4">Hi, Quan</p>
@@ -482,7 +482,7 @@
                         <div class="message-options dark">
                           <div class="message-time">
                             <div class="d-flex flex-row">
-                              <div class="mr-2">07:06</div>
+                              <div class="mr-1">07:06</div>
                               <div class="svg15 double-check"></div>
                             </div>
                           </div>
@@ -556,15 +556,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="chat-search pl-3 pr-3">
+                <div class="chat-search pl-3 pr-3" id="scroll">
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Write a message">
+                    <input type="text" class="form-control" id="message" placeholder="Write a message">
                     <div class="input-group-append prepend-white">
                       <span class="input-group-text pl-2 pr-2">
                         <i class="chat-upload-trigger fs-19 bi bi-file-earmark-plus ml-2 mr-2"></i>
                         <i class="fs-19 bi bi-emoji-smile ml-2 mr-2"></i>
                         <i class="fs-19 bi bi-camera ml-2 mr-2"></i>
-                        <i class="fs-19 bi bi-cursor ml-2 mr-2"></i>
+                        <a  onclick="sendMessage()" class="text-success"><i class="fs-19 bi bi-cursor ml-2 mr-2"></i></a>
                         <div class="chat-upload">
                           <div class="d-flex flex-column">
                             <div class="p-2">
@@ -620,8 +620,57 @@
       $('.user-undetail-trigger').on('click', function(e) {
         $(this).closest('.chat').find('.chat-user-detail').toggleClass("active");
       });
+
     })(jQuery); 
 
+  </script>
+  <script>
+    $(document).ready(function(){
+        $(document).on('keypress',function(e) {
+            if(e.which == 13) {
+                
+                sendMessage();
+                
+            }
+        });
+
+       
+    });
+    function sendMessage(){
+               let message =   document.getElementById('message');
+                if(message.value == '') return;
+                var d = new Date(); // for now
+            
+             $('#my_message').append(`<div class="d-flex flex-row-reverse mb-2">
+                      <div class="right-chat-message fs-13 mb-2">
+                        <div class="mb-0 mr-3 pr-4">
+                          <div class="d-flex flex-row">
+                            <div class="pr-2 message_break">${message.value}</div>
+                            <div class="pr-1"></div>
+                          </div>
+                        </div>
+                        <div class="message-options dark">
+                          <div class="message-time">
+                            <div class="d-flex flex-row">
+                              <div class="mr-1">${d.getHours()}:${ d.getMinutes()}</div>
+                              <div class="svg15 single-check"></div>
+                            </div>
+                          </div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                    </div>`)
+                    message.value = '';
+                    const element = document.getElementById('chat-panel-scroll');
+                 
+                    element.scrollTop = element.scrollHeight;
+
+                 
+                    // var position = $(".chat-search").last().position().top;
+                  
+                    // $('.scrollable-chat-panel').scrollTop(position);
+                
+        }
   </script>
 </body>
 </html>

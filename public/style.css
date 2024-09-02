@@ -591,7 +591,7 @@ body {
   }
   
   .chat.chat-panel .left-chat-message, .chat.chat-panel .right-chat-message {
-    padding: .5rem 1rem;
+    padding: 0.5rem 9px;
     max-width: 47%
   }
   
@@ -792,4 +792,8 @@ body {
   
   .ps-container:hover>.ps-scrollbar-y-rail:hover>.ps-scrollbar-y {
     background-color: #a2adb7
+  }
+
+  .message_break{
+    word-break: break-all;
   }
