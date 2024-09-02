@@ -7,8 +7,11 @@ const PORT = 3001;
 
 app.use(express.static(__dirname + '/public'));
 
+app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+
 
 const authRoute = require('./routes/auth');
 const route = require('./routes/route');
