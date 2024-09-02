@@ -5,7 +5,7 @@ const hostname = '127.0.0.1';
 const app = express();
 const PORT = 3001;
 
-
+app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,4 +18,5 @@ app.use('/auth',authRoute);
 app.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}/`);
 });
+
 
