@@ -4,10 +4,12 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
 const User = require('../User');
 
-
+const config = require('../config');
+const { head } = require('../routes/route');
 
 // Secret key for JWT (keep this safe)
-const JWT_SECRET = 'mysecret';
+const JWT_SECRET = config.secret;
+
 
 // Register a new user
 const registerUser = async(req, res) => {
@@ -44,7 +46,7 @@ const registerUser = async(req, res) => {
 // Authenticate a user and generate a JWT
 const loginUser =  async (req, res) => {
   const { email, password } = req.body;
-    console.log(email)
+  
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     // in case request params meet the validation criteria
@@ -66,14 +68,22 @@ const loginUser =  async (req, res) => {
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-    return res.status(401).json({ error: 'Authentication failed' });
+      return res.status(401).json({ error: 'Authentication failed' });
     }
-    const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
-    expiresIn: '1h',
-    });
-    res.status(200).json({ message: 'Login successful', token });
+    const token = jwt.sign({ userId: user.id }, config.secret, {
+        expiresIn: '1h',
+        });
+        console.log(token)
+      req.session.token = token;
+    
+      req.session.user = {id:user.id,email:user.email};
+
+      console.log(req.session.user);
+      res.redirect('/');
+
     } catch (error) {
-    res.status(500).json({ error: 'Login failed' });
+      console.log(error)
+    res.status(500).json({ error: 'Login failed', message: error });
     }
 
 
@@ -81,20 +91,24 @@ const loginUser =  async (req, res) => {
 
 // Middleware to protect routes
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization'];
-
-  if (!token) {
+  const header = req.session.token;
+  console.log(config.secret,header);
+  if (!header) {
     return res.status(403).json({ message: 'No token provided' });
   }
+  
 
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(500).json({ message: 'Failed to authenticate token' });
-    }
 
-    req.userId = decoded.id;
+
+  try {
+    const decodedUser = jwt.verify(header, config.secret);
+    req.user = decodedUser;
     next();
-  });
+    }catch(error) {
+      
+        return res.status(400).send({message: 'Invalid token..'});
+    }
 };
+
 
 module.exports = { registerUser, loginUser, verifyToken };

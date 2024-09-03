@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-
+const authMiddleware = require('../middleware/auth')
 const authController = require('../controller/AuthController');
 
 const { body } = require("express-validator");
@@ -37,5 +37,16 @@ router.get('/protected', authController.verifyToken, (req, res) => {
   res.json({ message: 'This is a protected route', userId: req.userId });
 });
 
+router.get('/test', authMiddleware, async (req, resp) =>{
+    resp.send({message: 'This api endpoint is protected by jwt'})
+})
 
+router.get('/',authController.verifyToken, (req, res) => {
+  res.render('index')
+});
+
+router.get('/logout',(req,res)=>{
+  req.session.destroy();
+  res.redirect('/login')
+})
 module.exports = router;
