@@ -5,8 +5,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const hostname = '127.0.0.1';
 const app = express();
+
+
+
+
 const MySQLStore = require('express-mysql-session')(session);
+
 const PORT = 3001;
+
+
+
 
 const options = {
 	host: 'localhost',
@@ -39,6 +47,8 @@ app.use(session({
 
 app.use('/auth',authRoute);
 app.use('/',route);
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}/`);

@@ -11,6 +11,17 @@ const authMiddleware = require('../middleware/auth')
 //         res.render('index')
 //   });
   
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+const app = express();
+const server = createServer(app);
+
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
   router.get('/',authMiddleware, (req, res) => {
     res.render('index')
   });
