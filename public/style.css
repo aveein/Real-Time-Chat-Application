@@ -797,3 +797,7 @@ body {
   .message_break{
     word-break: break-all;
   }
+
+  #my_message {
+    min-height: 620px;
+  }

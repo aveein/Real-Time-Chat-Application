@@ -3,10 +3,14 @@ const session = require('express-session')
 const express = require('express');
 
 const bodyParser = require('body-parser');
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+
 const hostname = '127.0.0.1';
+
 const app = express();
-
-
+const server = createServer(app);
+const io = new Server(server);
 
 
 const MySQLStore = require('express-mysql-session')(session);
@@ -29,6 +33,8 @@ const sessionStore = new MySQLStore(options);
 
 app.use(express.static(__dirname + '/public'));
 
+global.__basedir = __dirname;
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -48,9 +54,16 @@ app.use(session({
 app.use('/auth',authRoute);
 app.use('/',route);
 
+io.on('connection', (socket) => {
+  console.log('a user connecteds');
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+    socket.emit('chat message', { name: 'John' });
+  });
+});
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running at http://${hostname}:${PORT}/`);
 });
 

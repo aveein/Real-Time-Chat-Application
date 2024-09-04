@@ -75,13 +75,14 @@
                       </div>
                     </div>
                   </div>
+             
                   <div class="p-3 chat-user-info">
                     <div class="card-body text-center">
                       <a href="#!">
                         <img src="https://user-images.githubusercontent.com/35243461/168796876-2e363a49-b32c-4218-b5a3-ce12493af69e.jpg" class="rounded-circle img-fluid shadow avatar-xxl">
                       </a>
                       <div class="pt-4 text-center animate4">
-                        <h6 class="fw-300 mb-1">Quan Albert</h6>
+                        <h6 class="fw-300 mb-1"> <%= auth_user.name %></h6>
                         <p class="text-muted">Web Developer</p>
                         <div class="mt-4">
                           <a href="#" class="btn btn-light-skype btn-icon btn-circle btn-sm btn-shadow mr-2"><i class="bx bxl-skype"></i></a>
@@ -147,34 +148,37 @@
                 </div>
                 <div class="chat-user-panel">
                   <div class="pb-3 d-flex flex-column navigation-mobile pagination-scrool chat-user-scroll">
-                    <div class="chat-item d-flex pl-3 pr-0 pt-3 pb-3">
-                      <div class="w-100">
-                        <div class="d-flex pl-0">
-                          <img class="rounded-circle shadow avatar-sm mr-3" src="https://user-images.githubusercontent.com/35243461/168796884-ee3aafb6-8083-48ec-9cfb-51b95eae08fe.jpg">
-                          <div>
-                            <p class="margin-auto fw-400 text-dark-75">Emily Woods</p>
-                            <div class="d-flex flex-row mt-1">
+                    <% users.forEach(function(user){ %>
+                      <div class="chat-item active d-flex pl-3 pr-0 pt-3 pb-3 person_chat" data-id=<%= user.id %>>
+                        <div class="w-100">
+                          <div class="d-flex pl-0">
+                            <img class="rounded-circle shadow avatar-sm mr-3" src="https://user-images.githubusercontent.com/35243461/168796884-ee3aafb6-8083-48ec-9cfb-51b95eae08fe.jpg">
+                            <div>
+                              <p class="margin-auto fw-400 text-dark-75"><%= user.name %></p>
+                              <div class="d-flex flex-row mt-1">
+                                <span>
+                                  <div class="svg15 double-check"></div>
+                                </span>
+                                <span class="message-shortcut margin-auto text-muted fs-13 ml-1 mr-4">I'm looking forward to it</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="flex-shrink-0 margin-auto pl-2 pr-3">
+                          <div class="d-flex flex-column">
+                            <p class="text-muted text-right fs-13 mb-2">08:55</p>
+                            <div class="text-right d-flex flex-row">
                               <span>
-                                <div class="svg15 double-check"></div>
+                                <div class="svg18 pinned"></div>
                               </span>
-                              <span class="message-shortcut margin-auto text-muted fs-13 ml-1 mr-4">I'm looking forward to it</span>
+                              <i class="text-muted la la-angle-down ml-1 fs-15"></i>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="flex-shrink-0 margin-auto pl-2 pr-3">
-                        <div class="d-flex flex-column">
-                          <p class="text-muted text-right fs-13 mb-2">08:55</p>
-                          <div class="text-right d-flex flex-row">
-                            <span>
-                              <div class="svg18 pinned"></div>
-                            </span>
-                            <i class="text-muted la la-angle-down ml-1 fs-15"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="chat-item active d-flex pl-3 pr-0 pt-3 pb-3">
+                    <% }); %>
+              
+                    <!-- <div class="chat-item active d-flex pl-3 pr-0 pt-3 pb-3">
                       <div class="w-100">
                         <div class="d-flex pl-0">
                           <img class="rounded-circle shadow avatar-sm mr-3" src="https://user-images.githubusercontent.com/35243461/168796877-f6c8819a-5d6e-4b2a-bd56-04963639239b.jpg">
@@ -347,253 +351,261 @@
                           <p class="text-muted text-right fs-13 mb-2">1.9.2021</p>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-8 col-12 card-stacked">
-              <div class="card shadow-line mb-3 chat chat-panel">
-                <div class="p-3 chat-header">
-                  <div class="d-flex">
-                    <div class="w-100 d-flex pl-0">
-                      <img class="rounded-circle shadow avatar-sm mr-3 chat-profile-picture" src="https://user-images.githubusercontent.com/35243461/168796877-f6c8819a-5d6e-4b2a-bd56-04963639239b.jpg">
-                      <div class="mr-3">
-                        <a href="!#">
-                          <p class="fw-400 mb-0 text-dark-75">Beate Lemoine</p>
+              <div class="card shadow-line mb-3 chat chat-panel" >
+                <div id="chat-panel">
+                  <!-- <div class="p-3 chat-header">
+                    <div class="d-flex">
+                      <div class="w-100 d-flex pl-0">
+                        <img class="rounded-circle shadow avatar-sm mr-3 chat-profile-picture" src="https://user-images.githubusercontent.com/35243461/168796877-f6c8819a-5d6e-4b2a-bd56-04963639239b.jpg">
+                        <div class="mr-3">
+                          <a href="!#">
+                            <p class="fw-400 mb-0 text-dark-75">Beate Lemoine</p>
+                          </a>
+                          <p class="sub-caption text-muted text-small mb-0"><i class="la la-clock mr-1"></i>last seen today at 09:15 PM</p>
+                        </div>
+                      </div>
+                      <div class="flex-shrink-0 margin-auto">
+                        <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
+                          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                          </svg>
                         </a>
-                        <p class="sub-caption text-muted text-small mb-0"><i class="la la-clock mr-1"></i>last seen today at 09:15 PM</p>
+                        <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
+                          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                          </svg>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
+                          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          </svg>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
+                          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                          </svg>
+                        </a>
                       </div>
                     </div>
-                    <div class="flex-shrink-0 margin-auto">
-                      <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <line x1="12" y1="16" x2="12" y2="12"></line>
-                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                      </a>
-                      <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
-                          <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                        </svg>
-                      </a>
-                      <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
-                          <circle cx="11" cy="11" r="8"></circle>
-                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                      </a>
-                      <a href="#" class="btn btn-sm btn-icon btn-light active text-dark ml-2">
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather">
-                          <circle cx="12" cy="12" r="1"></circle>
-                          <circle cx="12" cy="5" r="1"></circle>
-                          <circle cx="12" cy="19" r="1"></circle>
-                        </svg>
-                      </a>
-                    </div>
+                  </div> -->
+  
+                  <div class="d-flex flex-row mb-3 navigation-mobile scrollable-chat-panel chat-panel-scroll" id="chat-panel-scroll">
+                    <div class="w-100 "  id="my_message" >
+                        <h5 class="text-muted text-center mt-5">Click on user to start messaging</h5>
+                      </div>
+
+                    <!-- <div class="w-100 p-3"  id="my_message" >
+                       <div class="svg36 loader-animate3 horizontal-margin-auto mb-2"></div> 
+                       <div class="text-center letter-space drop-shadow text-uppercase fs-12 w-100 mb-3">Today</div> 
+                       <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Hi, Quan</p>
+                        <div class="message-options">
+                          <div class="message-time">06:15</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="mb-0 mr-3 pr-4">
+                            <div class="d-flex flex-row">
+                              <div class="pr-2">Hey, Beate</div>
+                              <div class="pr-4"></div>
+                            </div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">06:49</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Oh hey, I didn’t see you there. Did you already get a table?</p>
+                        <div class="message-options">
+                          <div class="message-time">06:52</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">I just want to ask</p>
+                        <div class="message-options">
+                          <div class="message-time">06:53</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="mb-0 mr-3 pr-4">
+                            <div class="d-flex flex-row">
+                              <div class="pr-2">Yeah, right over here.</div>
+                              <div class="pr-4"></div>
+                            </div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">06:53</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">I’m glad we had time to meet up.</p>
+                        <div class="message-options">
+                          <div class="message-time">06:54</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="mb-0 mr-3 pr-4">
+                            <div class="d-flex flex-row">
+                              <div class="pr-2">;)</div>
+                              <div class="pr-4"></div>
+                            </div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">06:57</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="mb-0 mr-3 pr-4">
+                            <div class="d-flex flex-row">
+                              <div class="pr-4">Me too. So, what’s going on?</div>
+                              <div class="pr-4"></div>
+                            </div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">06:57</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Oh, not much. You?</p>
+                        <div class="message-options">
+                          <div class="message-time">07:05</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="d-flex flex-row">
+                            <div class="pr-2">Not much. Hey, how did your interview go? Wasn’t that today?</div>
+                            <div class="pr-4"></div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-1">07:06</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Oh, yeah. I think it went well. I don’t know if I got the job yet, but they said they would call in a few days.</p>
+                        <div class="message-options">
+                          <div class="message-time">07:09</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="mb-0 mr-3 pr-4">
+                            <div class="d-flex flex-row">
+                              <div class="pr-2">Well, I’m sure you did great. Good luck.</div>
+                              <div class="pr-4"></div>
+                            </div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">07:12</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Thanks. I’m just happy that it’s over. I was really nervous about it.</p>
+                        <div class="message-options">
+                          <div class="message-time">07:16</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row-reverse mb-2">
+                        <div class="right-chat-message fs-13 mb-2">
+                          <div class="d-flex flex-row">
+                            <div class="pr-2">I can understand that. I get nervous before interviews, too</div>
+                            <div class="pr-4"></div>
+                          </div>
+                          <div class="message-options dark">
+                            <div class="message-time">
+                              <div class="d-flex flex-row">
+                                <div class="mr-2">07:21</div>
+                                <div class="svg15 double-check"></div>
+                              </div>
+                            </div>
+                            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Well, thanks for being supportive. I appreciate it.</p>
+                        <div class="message-options">
+                          <div class="message-time">07:24</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div>
+                      <div class="left-chat-message fs-13 mb-2">
+                        <p class="mb-0 mr-3 pr-4">Hey Quan, If you are free now we can meet tonight ?</p>
+                        <div class="message-options">
+                          <div class="message-time">08:21</div>
+                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                        </div>
+                      </div> 
+                    </div> -->
                   </div>
                 </div>
-                <div class="d-flex flex-row mb-3 navigation-mobile scrollable-chat-panel chat-panel-scroll" id="chat-panel-scroll">
-                  <div class="w-100 p-3" id="my_message">
-                    <!-- <div class="svg36 loader-animate3 horizontal-margin-auto mb-2"></div> -->
-                    <div class="text-center letter-space drop-shadow text-uppercase fs-12 w-100 mb-3">Today</div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Hi, Quan</p>
-                      <div class="message-options">
-                        <div class="message-time">06:15</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="mb-0 mr-3 pr-4">
-                          <div class="d-flex flex-row">
-                            <div class="pr-2">Hey, Beate</div>
-                            <div class="pr-4"></div>
-                          </div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">06:49</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Oh hey, I didn’t see you there. Did you already get a table?</p>
-                      <div class="message-options">
-                        <div class="message-time">06:52</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">I just want to ask</p>
-                      <div class="message-options">
-                        <div class="message-time">06:53</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="mb-0 mr-3 pr-4">
-                          <div class="d-flex flex-row">
-                            <div class="pr-2">Yeah, right over here.</div>
-                            <div class="pr-4"></div>
-                          </div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">06:53</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">I’m glad we had time to meet up.</p>
-                      <div class="message-options">
-                        <div class="message-time">06:54</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="mb-0 mr-3 pr-4">
-                          <div class="d-flex flex-row">
-                            <div class="pr-2">;)</div>
-                            <div class="pr-4"></div>
-                          </div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">06:57</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="mb-0 mr-3 pr-4">
-                          <div class="d-flex flex-row">
-                            <div class="pr-4">Me too. So, what’s going on?</div>
-                            <div class="pr-4"></div>
-                          </div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">06:57</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Oh, not much. You?</p>
-                      <div class="message-options">
-                        <div class="message-time">07:05</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="d-flex flex-row">
-                          <div class="pr-2">Not much. Hey, how did your interview go? Wasn’t that today?</div>
-                          <div class="pr-4"></div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-1">07:06</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Oh, yeah. I think it went well. I don’t know if I got the job yet, but they said they would call in a few days.</p>
-                      <div class="message-options">
-                        <div class="message-time">07:09</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="mb-0 mr-3 pr-4">
-                          <div class="d-flex flex-row">
-                            <div class="pr-2">Well, I’m sure you did great. Good luck.</div>
-                            <div class="pr-4"></div>
-                          </div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">07:12</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Thanks. I’m just happy that it’s over. I was really nervous about it.</p>
-                      <div class="message-options">
-                        <div class="message-time">07:16</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse mb-2">
-                      <div class="right-chat-message fs-13 mb-2">
-                        <div class="d-flex flex-row">
-                          <div class="pr-2">I can understand that. I get nervous before interviews, too</div>
-                          <div class="pr-4"></div>
-                        </div>
-                        <div class="message-options dark">
-                          <div class="message-time">
-                            <div class="d-flex flex-row">
-                              <div class="mr-2">07:21</div>
-                              <div class="svg15 double-check"></div>
-                            </div>
-                          </div>
-                          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Well, thanks for being supportive. I appreciate it.</p>
-                      <div class="message-options">
-                        <div class="message-time">07:24</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                    <div class="left-chat-message fs-13 mb-2">
-                      <p class="mb-0 mr-3 pr-4">Hey Quan, If you are free now we can meet tonight ?</p>
-                      <div class="message-options">
-                        <div class="message-time">08:21</div>
-                        <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat-search pl-3 pr-3" id="scroll">
+            
+                <div class="chat-search d-none pl-3 pr-3" id="scroll">
                   <div class="input-group">
                     <input type="text" class="form-control" id="message" placeholder="Write a message">
                     <div class="input-group-append prepend-white">
@@ -672,6 +684,12 @@
             if(e.which == 13) {
                 
                 sendMessage();
+                let message =   document.getElementById('message');
+                if(message.value ) {
+        
+                  socket.emit('chat', message.value);
+                }
+                message.value = '';
                 
             }
         });
@@ -702,7 +720,7 @@
                         </div>
                       </div>
                     </div>`)
-                    message.value = '';
+               
                     const element = document.getElementById('chat-panel-scroll');
                  
                     element.scrollTop = element.scrollHeight;
@@ -714,9 +732,46 @@
                 
         }
   </script>
+  <script>
+
+
+    document.querySelectorAll('.person_chat').forEach(item => {
+      item.addEventListener('click', event => {
+        //handle click
+        
+       var user_id = item.getAttribute("data-id");
+       $.ajax({
+        url: "/get-message",
+          type: 'GET',
+          data: {
+            user_id: user_id
+          },
+          dataType: 'json', // added data type
+     
+          complete: function(res){
+            var html = JSON.parse(res.responseText);
+        
+            $('#chat-panel').html(html.htmlContent)
+            $('.scrollable-chat-panel').perfectScrollbar();
+            $('.scrollable-chat-panel').perfectScrollbar('update');
+            $('.pagination-scrool').perfectScrollbar();
+            const element = document.getElementById('chat-panel-scroll');
+                 
+           element.scrollTop = element.scrollHeight;
+
+           $('#scroll').removeClass('d-none')
+          }
+      });
+
+      })
+    })
+  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    socket.on('chat', (arg1) => {
+      console.log(arg1); // 1 
+    });
   </script>
 </body>
 </html>

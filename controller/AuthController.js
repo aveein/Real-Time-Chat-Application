@@ -71,12 +71,12 @@ const loginUser =  async (req, res) => {
       return res.status(401).json({ error: 'Authentication failed' });
     }
     const token = jwt.sign({ userId: user.id }, config.secret, {
-        expiresIn: '1h',
+        expiresIn: '3h',
         });
         console.log(token)
       req.session.token = token;
     
-      req.session.user = {id:user.id,email:user.email};
+      req.session.user = {id:user.id,email:user.email,name: user.name};
 
       console.log(req.session.user);
       res.redirect('/');
