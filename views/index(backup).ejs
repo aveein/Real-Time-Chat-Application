@@ -16,7 +16,6 @@
 
 <body>
     <div class="container-fluid">
-        <input type="hidden" id="users">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -708,6 +707,30 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        var selectUser = null;
+        const socket = io({
+            autoConnect: false,
+            reconnection: false
+        });
+        $.ajax({
+            url: "/get-user-detail",
+            type: 'GET',
+            dataType: 'json',
+            complete: function(e) {
+                var response = (e.responseJSON)
+                var username = response.name;
+                var id = response.id
+
+                socket.auth = {
+                    username,
+                    id
+                };
+
+                socket.connect();
+
+
+            }
+        });
         (function($) {
             "use strict";
             $('.scrollable-chat-panel').perfectScrollbar();
@@ -729,60 +752,30 @@
             });
 
         })(jQuery);
-    </script>
-    <script>
-        const socket = io({
-            autoConnect: false,
-            reconnection: false
-        });
-
-
-
-        var id = '<%= auth_user.id %>';
-
-
-        var username = '<%= auth_user.name %>';
-
-        socket.auth = {
-            username,
-            id
-        };
-        socket.connect();
-        socket.on("users", (users) => {
-            users.forEach((user) => {
-                console.log(user)
-                // user.self = user.userID === socket.id;
-                // $('#users').append(`<option value=${user.userID}>${user.username} - ${user.userID}</option`)
-            });
-
-
-            // put the current user first, and sort by username
-
-        });
-
-
-
 
 
 
         $(document).ready(function() {
 
-            $(document).on('keypress', function(e) {
-            
-                if (e.which == 13) {
-                    var content = document.getElementById('message').value
 
-                    var customer = $('#users').val();
-                    if (customer) {
+            $(document).on('keypress', function(e) {
+                if (e.which == 13) {
+
+                    let message = sendMessage();
+
+                    if (selectUser) {
+
                         socket.emit("private message", {
-                            content,
-                            to: customer,
+                            content: message,
+                            to: selectUser,
                         });
 
-                        document.getElementById('message').value = ''
                     }
+                    document.getElementById('message').value = ''
                 }
             });
+
+
         });
 
         function sendMessage() {
@@ -829,8 +822,8 @@
 
                 var user_id = item.getAttribute("data-id");
 
+                selectUser = user_id;
 
-                $('#users').val(user_id)
                 $.ajax({
                     url: "/get-message",
                     type: 'GET',
@@ -859,12 +852,25 @@
 
 
 
+
+        this.usernameAlreadySelected = false;
+        // socket.on('chat', (arg1) => {
+        //   console.log(arg1,'from client'); // 1 
+        // });
+
+
+
+
+
+
         socket.on("private message", ({
             content,
             from
         }) => {
 
-            // $('#messages').append(`<li>${from} ${content}</li>`)
+            console.log(content)
+
+
         });
 
         socket.onAny((event, ...args) => {

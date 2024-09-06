@@ -3,14 +3,14 @@ const session = require('express-session')
 const express = require('express');
 
 const bodyParser = require('body-parser');
-const { createServer } = require('node:http');
-const { Server } = require('socket.io');
+
+
 
 const hostname = '127.0.0.1';
 
 const app = express();
-const server = createServer(app);
-const io = new Server(server);
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 
 const MySQLStore = require('express-mysql-session')(session);
@@ -54,13 +54,63 @@ app.use(session({
 app.use('/auth',authRoute);
 app.use('/',route);
 
-io.on('connection', (socket) => {
-  console.log('a user connecteds');
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    socket.emit('chat message', { name: 'John' });
-  });
+// io.use((socket, next) => {
+//   const username = socket.handshake.auth.username;
+
+//   if (!username) {
+//     return next(new Error("invalid username"));
+//   }
+//   socket.userID = 
+//   socket.username = username;
+//   next();
+// });
+
+
+
+
+io.use((socket, next) => {
+  const username = socket.handshake.auth.username;
+  const id = socket.handshake.auth.id;
+
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  socket.userID = id;
+  socket.id = socket.id;
+
+  next();
 });
+
+
+io.on('connection', (socket) => {
+
+  console.log('a user connected');
+ 
+  socket.join(socket.userID);
+
+  const users = [];
+
+  for (let [id, socket] of io.of("/").sockets) {
+    users.push({
+      userID: socket.userID,
+      username: socket.username,
+      id: socket.id,
+    });
+  }
+  socket.emit("users", users);
+
+  socket.on("private message", ({ content, to }) => {
+
+    
+      socket.to(to).to(socket.userID).emit("private message", {
+        content,
+        from: socket.userID,
+        to
+      });
+    });
+});
+
 
 
 server.listen(PORT, () => {

@@ -17,7 +17,10 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
+  last_message: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   status: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,

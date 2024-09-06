@@ -32,6 +32,23 @@ io.on('connection', (socket) => {
     res.render('index', {users: users,auth_user:auth_user})
   });
 
+  router.get('/get-user-detail',authMiddleware, async(req, res) => {
+   
+    const user = req.session.user;
+
+    res.json(user)
+  });
+
+  router.get('/get-user-detail-by-id/:id',authMiddleware, async(req, res) => {
+   
+
+   var data = await User.findByPk(req.params.id)
+
+   res.json({id:data.id,email:data.email,name:data.name})
+
+
+  });
+
   router.get('/get-message',authMiddleware,async(req,res)=>{
     const user_id = req.query.user_id;
     // const view =   render('my-message');

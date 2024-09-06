@@ -1,4 +1,5 @@
 const sequelize = require('./db');
+const Message = require('./Message');
 const User = require('./User');
 const bcrypt = require('bcryptjs');
 
@@ -13,6 +14,20 @@ const bcrypt = require('bcryptjs');
       name: 'Jane Doe',
       email: 'demo@example.com',
       password: bcrypt.hashSync('password', 8),
+ 
+    });
+    const newUser2 = await User.create({
+      name: 'Test',
+      email: 'test1@gmail.com',
+      password: bcrypt.hashSync('test@123', 8),
+ 
+    });
+
+    const message = await Message.create({
+      message: 'Test',
+      from_id: 1,
+      to_id: 2,
+      
  
     });
     
