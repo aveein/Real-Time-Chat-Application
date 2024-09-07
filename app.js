@@ -15,7 +15,7 @@ const io = require('socket.io')(server);
 
 const MySQLStore = require('express-mysql-session')(session);
 
-const PORT = 3001;
+const PORT = 3000;
 
 
 
