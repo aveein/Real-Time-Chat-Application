@@ -44,39 +44,41 @@
     <div class="w-100 p-3"  id="my_message" >
        <!-- <div class="svg36 loader-animate3 horizontal-margin-auto mb-2"></div>  -->
        <!-- <div class="text-center letter-space drop-shadow text-uppercase fs-12 w-100 mb-3">Today</div>  -->
+       <% messages.forEach(function(message){ %>
+        
+      <% if(message.from_id === user.id){ %>
        <div class="left-chat-message fs-13 mb-2">
-        <p class="mb-0 mr-3 pr-4">Hi, Quan</p>
+        <p class="mb-0 mr-3 pr-4"><%- message.message %></p>
         <div class="message-options">
-          <div class="message-time">06:15</div>
+          <% var d = new Date(message.createdAt)  %>
+          <div class="message-time"><%= d.getHours()%>:<%=d.getMinutes().toString().padStart(2, '0')%></div>
           <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
         </div>
       </div>
-      <div class="d-flex flex-row-reverse mb-2">
-        <div class="right-chat-message fs-13 mb-2">
-          <div class="mb-0 mr-3 pr-4">
-            <div class="d-flex flex-row">
-              <div class="pr-2">Hey, Beate</div>
-              <div class="pr-4"></div>
-            </div>
-          </div>
-          <div class="message-options dark">
-            <div class="message-time">
+     <% } else { %>
+        <div class="d-flex flex-row-reverse mb-2">
+          <div class="right-chat-message fs-13 mb-2">
+            <div class="mb-0 mr-3 pr-4">
               <div class="d-flex flex-row">
-                <div class="mr-2">06:49</div>
-                <div class="svg15 double-check"></div>
+                <div class="pr-2"><%- message.message %></div>
+                <div class="pr-4"></div>
               </div>
             </div>
-            <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+            <div class="message-options dark">
+              <div class="message-time">
+                <div class="d-flex flex-row">
+                  <div class="mr-2">06:49</div>
+                  <div class="svg15 double-check"></div>
+                </div>
+              </div>
+              <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="left-chat-message fs-13 mb-2">
-        <p class="mb-0 mr-3 pr-4">Oh hey, I didn’t see you there. Did you already get a table?</p>
-        <div class="message-options">
-          <div class="message-time">06:52</div>
-          <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
-        </div>
-      </div>
+        <% } %>
+      <% }); %>
+ 
+ 
 
     </div>
   </div>

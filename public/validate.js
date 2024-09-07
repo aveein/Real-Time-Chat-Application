@@ -54,7 +54,12 @@ $("#signup").click(function() {
           },
           password: {
             required: true,
-            minlength: 5
+            minlength: 6
+          },
+          password_confirmation: {
+            required: true,
+            minlength: 6,
+            equalTo: '#password_register'
           }
         },
         
@@ -64,6 +69,11 @@ $("#signup").click(function() {
           password: {
             required: "Please provide a password",
             minlength: "Your password must be at least 5 characters long"
+          },
+          password_confirmation: {
+            required: "Please provide a confirm password",
+            minlength: "Your password must be at least 5 characters long",
+            equalTo: "Please enter same password"
           },
           email: "Please enter a valid email address"
         },

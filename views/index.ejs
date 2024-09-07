@@ -192,11 +192,10 @@
                                                         <p class="margin-auto fw-400 text-dark-75"><%= user.name %></p>
                                                         <div class="d-flex flex-row mt-1">
                                                             <span>
-                                                                <div class="svg15 double-check"></div>
+                                                                <div class="svg15 single-check"></div>
                                                             </span>
                                                             <span
-                                                                class="message-shortcut margin-auto text-muted fs-13 ml-1 mr-4">I'm
-                                                                looking forward to it</span>
+                                                                class="message-shortcut margin-auto text-muted fs-13 ml-1 mr-4">Send Message</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -771,24 +770,41 @@
             
                 if (e.which == 13) {
                     var content = document.getElementById('message').value
-
                     var customer = $('#users').val();
+                    sendMessage()
                     if (customer) {
-                        socket.emit("private message", {
-                            content,
-                            to: customer,
-                        });
+                      socket.emit("private message", {
+                        content,
+                        to: customer,
+                      });
+                      
+                      document.getElementById('message').value = ''
 
-                        document.getElementById('message').value = ''
+                      $.ajax({
+                          url: "/post-message",
+                          type: 'POST',
+                          data: {
+                              content: content,
+                              to:  customer
+                          },
+                          success:function(r){
+                              console.log(r)
+                          }
+
+
+                      });
                     }
+
+                    
                 }
             });
         });
-
+        var d = new Date();
         function sendMessage() {
             let message = document.getElementById('message');
             if (message.value == '') return;
-            var d = new Date(); // for now
+          // for now
+          
 
             $('#my_message').append(`<div class="d-flex flex-row-reverse mb-2">
                       <div class="right-chat-message fs-13 mb-2">
@@ -864,6 +880,16 @@
             from
         }) => {
 
+              if($('#users').val() == from) {
+                $('#my_message').append(` <div class="left-chat-message fs-13 mb-2">
+                  <p class="mb-0 mr-3 pr-4">${content}</p>
+                  <div class="message-options">
+                    <div class="message-time">${d.getHours()}:${ d.getMinutes().toString().padStart(2, '0')}</div>
+                    <div class="message-arrow"><i class="text-muted la la-angle-down fs-17"></i></div>
+                  </div>
+                </div>`);
+       
+              }
             // $('#messages').append(`<li>${from} ${content}</li>`)
         });
 

@@ -40,7 +40,8 @@ const registerUser = async(req, res) => {
   
 
   const user = await User.create(newUser);
-  res.status(201).json({ message: 'User registered successfully' });
+  // res.status(201).json({ message: 'User registered successfully' });
+  res.redirect('/login')
 };
 
 // Authenticate a user and generate a JWT

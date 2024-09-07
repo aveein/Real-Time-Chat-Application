@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router();
-var ejs = require('ejs');
+
 const authMiddleware = require('../middleware/auth')
-const path = require('path');
+
+const MessageController =require('../controller/MessageController')
 // router.get('/',authController.verifyToken ,(req, res) => {
 //     console.log(req.session.user)
 //     res.render('index')
@@ -39,38 +40,12 @@ io.on('connection', (socket) => {
     res.json(user)
   });
 
-  router.get('/get-user-detail-by-id/:id',authMiddleware, async(req, res) => {
-   
+  router.get('/get-user-detail-by-id/:id',authMiddleware, MessageController.getUserDetail);
 
-   var data = await User.findByPk(req.params.id)
-
-   res.json({id:data.id,email:data.email,name:data.name})
+   router.post('/post-message',authMiddleware,MessageController.postMessage);
 
 
-  });
-
-  router.get('/get-message',authMiddleware,async(req,res)=>{
-    const user_id = req.query.user_id;
-    // const view =   render('my-message');
-    // res.render('my-message');
-
-  
-    var user = await User.findByPk(user_id);
-   
- 
-    ejs.renderFile(path.join(__basedir, 'views', 'my-message.ejs'), { user: user }, (err, htmlContent) => {
-      if (err) {
-          console.log(err)
-          return res.status(500).json({ error: "Error rendering template" });
-      }
-
-      // Send the rendered HTML as part of the JSON response
-      res.status(200).json({
-          message: "Here is some HTML content",
-          htmlContent: htmlContent
-      });
-  });
-  });
+  router.get('/get-message',authMiddleware,MessageController.getMessage);
   
 router.get('/login', function(req, res) {
     res.render('login')
