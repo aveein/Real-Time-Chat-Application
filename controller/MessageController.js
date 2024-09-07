@@ -43,17 +43,18 @@ const getUserDetail = async(req, res) => {
     var user = await User.findByPk(user_id);
 
     var messages = await Message.findAll({ 
-      
-      [Op.or]: [
-        { 
-          from_id:req.user.userId,
-          to_id: user_id 
+      where: {
+        from_id: {
+          [Op.or]: [req.user.userId , user_id],
         },
-        {
-          from_id: user_id ,
-          to_id:  req.user.userId
-        }
-      ]
+        to_id: {
+          [Op.or]: [req.user.userId , user_id],
+        },
+     
+        
+        
+      },
+     
     });
  
     ejs.renderFile(path.join(__basedir, 'views', 'my-message.ejs'), { user: user,messages: messages }, (err, htmlContent) => {
