@@ -1,12 +1,16 @@
 const { Sequelize } = require('sequelize');
 
 // Set up the Sequelize instance
+require('dotenv').config()
+
+var config = process.env
+
 const sequelize = new Sequelize(
-    'chat',
-    'root',
-    '',
+    config.DB_DATABASE,
+    config.DB_USERNAME,
+    config.DB_PASSWORD,
      {
-       host: 'localhost',
+       host: config.DB_HOST,
        dialect: 'mysql'
      }
    );
