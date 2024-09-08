@@ -46,7 +46,11 @@ io.on('connection', (socket) => {
 
 
   router.get('/get-message',authMiddleware,MessageController.getMessage);
+
+  router.get("/get-search",authMiddleware,MessageController.searchUser);
   
+
+
 router.get('/login', function(req, res) {
     res.render('login')
 })

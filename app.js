@@ -6,12 +6,16 @@ const bodyParser = require('body-parser');
 
 
 
-const hostname = '127.0.0.1';
+
 
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+require('dotenv').config()
 
+var config = process.env
+
+const hostname = config.HOSTNAME;
 
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -21,11 +25,11 @@ const PORT = 3000;
 
 
 const options = {
-	host: 'localhost',
+	host: config.DB_HOST,
 	port: 3306,
-	user: 'root',
-	password: '',
-	database: 'chat'
+	user: config.DB_USERNAME,
+	password: config.DB_PASSWORD,
+	database: config.DB_DATABASE
 };
 
 

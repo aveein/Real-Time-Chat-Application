@@ -70,5 +70,31 @@ const getUserDetail = async(req, res) => {
       });
   });
   }
+
+  const searchUser = async (req,res) => {
+      var search = req.query.search;
+      var users = await User.findAll({
+        where: {
+          [Op.not]: {
+            id: req.user.userId,
+          },
+          name: { [Op.like]: `%${search}%` },
+        },
+      });
+
+      ejs.renderFile(path.join(__basedir, 'views', 'search.ejs'), { users: users }, (err, htmlContent) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Error rendering template" });
+        }
   
-module.exports = { postMessage, getUserDetail,getMessage};
+        // Send the rendered HTML as part of the JSON response
+        res.status(200).json({
+        
+            htmlContent: htmlContent
+        });
+      });
+     
+  }
+  
+module.exports = { postMessage, getUserDetail,getMessage,searchUser};

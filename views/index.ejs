@@ -155,8 +155,8 @@
                                 </div>
                                 <div class="chat-search pl-3 pr-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control"
-                                            placeholder="Search a conversation">
+                                        <input type="text" class="form-control "
+                                            placeholder="Search a conversation" id="search">
                                         <div class="input-group-append prepend-white">
                                             <span class="input-group-text pl-2 pr-2">
                                                 <i class="fs-17 las la-search drop-shadow"></i>
@@ -180,7 +180,7 @@
                                 </div>
                                 <div class="chat-user-panel">
                                     <div
-                                        class="pb-3 d-flex flex-column navigation-mobile pagination-scrool chat-user-scroll">
+                                        class="pb-3 d-flex flex-column navigation-mobile pagination-scrool chat-user-scroll" id="search_users">
                                         <% users.forEach(function(user){ %>
                                         <div class="chat-item active d-flex pl-3 pr-0 pt-3 pb-3 person_chat"
                                             data-id=<%= user.id %>>
@@ -839,38 +839,33 @@
 
 
 
-        document.querySelectorAll('.person_chat').forEach(item => {
-            item.addEventListener('click', event => {
+        $(document).on("click",'.person_chat',function(e){
+          var user_id = $(this).attr("data-id");
 
 
-                var user_id = item.getAttribute("data-id");
+                  $('#users').val(user_id)
+                    $.ajax({
+                        url: "/get-message",
+                        type: 'GET',
+                        data: {
+                            user_id: user_id
+                        },
+                        dataType: 'json', // added data type
 
+                        complete: function(res) {
+                            var html = JSON.parse(res.responseText);
 
-                $('#users').val(user_id)
-                $.ajax({
-                    url: "/get-message",
-                    type: 'GET',
-                    data: {
-                        user_id: user_id
-                    },
-                    dataType: 'json', // added data type
+                            $('#chat-panel').html(html.htmlContent)
+                            $('.scrollable-chat-panel').perfectScrollbar();
+                            $('.scrollable-chat-panel').perfectScrollbar('update');
+                            $('.pagination-scrool').perfectScrollbar();
+                            const element = document.getElementById('chat-panel-scroll');
 
-                    complete: function(res) {
-                        var html = JSON.parse(res.responseText);
+                            element.scrollTop = element.scrollHeight;
 
-                        $('#chat-panel').html(html.htmlContent)
-                        $('.scrollable-chat-panel').perfectScrollbar();
-                        $('.scrollable-chat-panel').perfectScrollbar('update');
-                        $('.pagination-scrool').perfectScrollbar();
-                        const element = document.getElementById('chat-panel-scroll');
-
-                        element.scrollTop = element.scrollHeight;
-
-                        $('#scroll').removeClass('d-none')
-                    }
-                });
-
-            })
+                            $('#scroll').removeClass('d-none')
+                        }
+                    });
         })
 
 
@@ -896,6 +891,26 @@
         socket.onAny((event, ...args) => {
             console.log(event, args);
         });
+    </script>
+
+    <script>
+      $('#search').on('keyup',function(){
+          var value = $(this).val();
+          $.ajax({
+            url: "/get-search",
+            type: 'GET',
+            data: {
+                search: value
+            },
+            dataType: 'json',
+
+            complete:function(res){
+              var html = JSON.parse(res.responseText);
+    
+              $('#search_users').html(html.htmlContent)
+            }
+          })
+      })
     </script>
 </body>
 
