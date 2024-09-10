@@ -801,3 +801,21 @@ body {
   #my_message {
     min-height: 620px;
   }
+
+  .circle { 
+    display: flex;
+    justify-content: center; 
+    line-height: 0px; 
+    border-radius: 50%; 
+    font-size: 14px; 
+    background-color: maroon; 
+    color: white; 
+    width: 21px;
+} 
+
+.circle span { 
+    display: inline-block; 
+    padding-top: 50%; 
+    padding-bottom: 50%; 
+    
+} 

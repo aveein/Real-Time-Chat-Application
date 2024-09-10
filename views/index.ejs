@@ -196,6 +196,13 @@
                                                             </span>
                                                             <span
                                                                 class="message-shortcut margin-auto text-muted fs-13 ml-1 mr-4">Send Message</span>
+                                                                <div class="d-flex justify-content-center  ">
+                                                                  
+                                                                </div>
+                                                                <span class="circle  d-none"> 
+                                                                  <span class="message_counter ">1</span> 
+                                                                 </span> 
+                                                               
                                                         </div>
                                                     </div>
                                                 </div>
@@ -204,10 +211,14 @@
                                                 <div class="d-flex flex-column">
                                                     <p class="text-muted text-right fs-13 mb-2">08:55</p>
                                                     <div class="text-right d-flex flex-row">
+                                                
+                                                  
+                                                 
                                                         <span>
                                                             <div class="svg18 pinned"></div>
                                                         </span>
                                                         <i class="text-muted la la-angle-down ml-1 fs-15"></i>
+                                                     
                                                     </div>
                                                 </div>
                                             </div>
@@ -769,7 +780,9 @@
             $(document).on('keypress', function(e) {
             
                 if (e.which == 13) {
+
                     var content = document.getElementById('message').value
+                    if(!content) return;
                     var customer = $('#users').val();
                     sendMessage()
                     if (customer) {
@@ -838,11 +851,13 @@
         }
 
 
-
+        var arr = {};
         $(document).on("click",'.person_chat',function(e){
           var user_id = $(this).attr("data-id");
-
-
+          var message_html = $(`div[data-id=${user_id}]`)
+          message_html.find('.circle').addClass('d-none')
+          message_html.find('.message-shortcut').text('Send Message')
+          delete arr[user_id];
                   $('#users').val(user_id)
                     $.ajax({
                         url: "/get-message",
@@ -869,7 +884,7 @@
         })
 
 
-
+       
         socket.on("private message", ({
             content,
             from
@@ -888,6 +903,26 @@
                 element.scrollTop = element.scrollHeight;
        
               }
+              obj = {
+              
+                [from]: arr[from] ? [...arr[from],content] : [content]
+                ,
+              };
+              arr = {...arr,...obj}
+              var counter = Object.keys(arr[from]).length;
+              var message_html = $(`div[data-id=${from}]`);
+              message_html.find('.circle').removeClass('d-none')
+              message_html.find('.message-shortcut').text(content)
+              message_html.find('.message_counter').removeClass('d-none').text(counter)
+
+              // console.log(arr)
+
+              // console.log(arr)
+              // var obj = {};
+              // obj[from] = {content};
+              //  arr.push(obj);
+              
+            
             // $('#messages').append(`<li>${from} ${content}</li>`)
         });
 
