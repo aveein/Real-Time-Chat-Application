@@ -13,7 +13,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 require('dotenv').config()
 const flash = require('connect-flash');
-
+const database = require('./index')
 var config = process.env
 
 const hostname = config.HOSTNAME;
@@ -48,6 +48,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 const authRoute = require('./routes/auth');
 const route = require('./routes/route');
 
+app.use(database)
 
 app.use(session({
   secret: 'keyboard cat',
@@ -60,6 +61,7 @@ app.use(session({
 app.use(
   flash()
 );
+
 app.use('/auth',authRoute);
 app.use('/',route);
 

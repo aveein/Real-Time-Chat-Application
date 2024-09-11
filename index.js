@@ -4,14 +4,16 @@ const User = require('./User');
 const bcrypt = require('bcryptjs');
 
 // Sync the database and create a sample user
-(async () => {
+async function database(req, res, next)  {
   try {
     
-    await sequelize.sync(); // This will create the tables based on the models
+    // This will create the tables based on the models
     // await sequelize.sync({ force: true }); // This will create the tables based on the models
+    await sequelize.sync(); 
     console.log('Database synced!');
     const count = await User.count();
     if(count === 0){
+
     // Create a new user
     const newUser = await User.create({
       name: 'Jane Doe',
@@ -40,6 +42,9 @@ const bcrypt = require('bcryptjs');
   } catch (error) {
     console.error('Error syncing the database:', error);
   } finally {
-    await sequelize.close();
+    next()
+  
   }
-})();
+};
+
+module.exports = database
