@@ -52,7 +52,9 @@ io.on('connection', (socket) => {
 
 
 router.get('/login', function(req, res) {
-    res.render('login')
+    const message = req.flash('message')
+    const errors = req.flash('errors')
+    res.render('login',{message: message,errors:errors})
 })
 
 

@@ -23,6 +23,7 @@ services:
       - mysql_server
     networks:
       - mysql-phpmyadmin
+    command: ["/bin/bash", "-c","/app/run.sh"]
     # phpmyadmin
   phpmyadmin:
     depends_on:

@@ -902,18 +902,20 @@
 
                 element.scrollTop = element.scrollHeight;
        
-              }
-              obj = {
+              }else{
+                obj = {
               
-                [from]: arr[from] ? [...arr[from],content] : [content]
-                ,
-              };
-              arr = {...arr,...obj}
-              var counter = Object.keys(arr[from]).length;
-              var message_html = $(`div[data-id=${from}]`);
-              message_html.find('.circle').removeClass('d-none')
-              message_html.find('.message-shortcut').text(content)
-              message_html.find('.message_counter').removeClass('d-none').text(counter)
+              [from]: arr[from] ? [...arr[from],content] : [content]
+              ,
+            };
+            arr = {...arr,...obj}
+            var counter = Object.keys(arr[from]).length;
+            var message_html = $(`div[data-id=${from}]`);
+            message_html.find('.circle').removeClass('d-none')
+            message_html.find('.message-shortcut').text(content)
+            message_html.find('.message_counter').removeClass('d-none').text(counter)
+              }
+            
 
               // console.log(arr)
 

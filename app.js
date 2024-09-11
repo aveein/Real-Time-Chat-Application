@@ -12,6 +12,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 require('dotenv').config()
+const flash = require('connect-flash');
 
 var config = process.env
 
@@ -47,6 +48,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 const authRoute = require('./routes/auth');
 const route = require('./routes/route');
 
+
 app.use(session({
   secret: 'keyboard cat',
   store: sessionStore,
@@ -55,6 +57,9 @@ app.use(session({
   cookie: { secure: false ,  maxAge: 600000 }
 }))
 
+app.use(
+  flash()
+);
 app.use('/auth',authRoute);
 app.use('/',route);
 

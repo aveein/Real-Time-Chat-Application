@@ -16,9 +16,12 @@ const registerUser = async(req, res) => {
   
   
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       // in case request params meet the validation criteria
-      return res.status(422).json({errors: errors.array()})
+      req.flash(errors, errors.array())
+      return redirect('/login');
+      // return res.status(422).json({errors: errors.array()})
 
     }
   const { email,name, password } = req.body;
@@ -28,7 +31,9 @@ const registerUser = async(req, res) => {
   const userExists = await User.findOne({ where: { email: email } });
   
   if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+    req.flash('message', ['User already exists', 'danger']);
+    return res.redirect('/login');
+    // return res.status(400).json({ message: 'User already exists' });
   }
 
   // Hash the password
@@ -65,7 +70,10 @@ const loginUser =  async (req, res) => {
 
 
     if (!user) {
-      return res.status(401).json({ error: 'Authentication failed' });
+      // return res.status(401).json({ error: 'Authentication failed' });
+       req.flash('message', ['Authentication failed', 'danger']);
+     
+       return res.redirect("/login");
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
