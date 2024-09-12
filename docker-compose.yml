@@ -8,6 +8,11 @@ services:
       - MYSQL_USER=chat
       - MYSQL_PASSWORD=secret
       - MYSQL_ROOT_PASSWORD=secret
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
     networks:
       - mysql-phpmyadmin
   app:
@@ -20,9 +25,11 @@ services:
       - .:/app
       - '/app/node_modules'
     depends_on: 
-      - mysql_server
+      mysql_server:
+        condition: service_healthy
     networks:
       - mysql-phpmyadmin
+    command: ["npm","start"]
     # command: ["/bin/bash", "-c","/app/run.sh"]
     # phpmyadmin
   phpmyadmin:
